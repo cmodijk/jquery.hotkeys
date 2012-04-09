@@ -45,12 +45,23 @@
 		if (keys.length === 1 && keys[0] === "") {
 			return;
 		}
-
+		
+		// By default disable the input
+		var disableInInput	= true;
+		for (var i in keys){
+			if (keys[i].indexOf('_input') > -1){
+				disableInInput = false;
+				
+				keys[i] = keys[i].replace('_input', '');
+			}
+		}
+		
 		handleObj.handler = function( event ) {
+			
 			// Don't fire in text-accepting inputs that we didn't directly bind to
 			// important to note that $.fn.prop is only available on jquery 1.6+
-			if ( this !== event.target && (/textarea|select/i.test( event.target.nodeName ) ||
-				event.target.type === "text" || $(event.target).prop('contenteditable') == 'true' )) {
+			if ( disableInInput && (this !== event.target && (/textarea|select/i.test( event.target.nodeName ) ||
+				event.target.type === "text" || $(event.target).prop('contenteditable') == 'true' ))) {
 				return;
 			}
 
